@@ -1,0 +1,34 @@
+# SmartHaus — Python dependencies
+# Install:  pip install -r requirements.txt
+#
+# The LangChain ecosystem moves quickly, so these are minimum versions known to work
+# with the modern API used in this project: LangGraph's prebuilt create_react_agent
+# plus the standalone `langchain-ollama` package (the LangChain 0.3.x era, after
+# ChatOllama split out of langchain-community). Once you have a working install, run
+#   pip freeze > requirements.txt
+# to lock exact versions for reproducibility.
+ 
+# --- LLM / agent framework ---
+langchain>=0.3,<0.4
+langchain-core>=0.3,<0.4
+langchain-ollama>=0.2          # ChatOllama — do NOT use the deprecated langchain_community import
+langgraph>=0.2.60              # langgraph.prebuilt.create_react_agent
+                               #   note: if create_react_agent rejects prompt=, upgrade langgraph
+                               #   (older versions used state_modifier=)
+ 
+# --- API layer ---
+fastapi>=0.110
+uvicorn[standard]>=0.29
+ 
+# --- data models & structured logging ---
+pydantic>=2.7,<3
+structlog>=24.1
+ 
+# --- tests / eval harness ---
+pytest>=8.0
+ 
+# --- optional: targeting the real job (AWS Bedrock) ---
+# Uncomment to swap ChatOllama -> ChatBedrockConverse (one line in app/agent.py).
+# langchain-aws>=0.2
+# boto3>=1.34
+ 
