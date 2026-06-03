@@ -7,9 +7,19 @@ def list_devices() -> dict:
     return world.WORLD
 
 @tool
-def get_sensor(room: str, sensor: str) -> dict:
+def get_sensor(room: str, sensor: str):
     """Read a sensor in a room, e.g. room='bedroom', sensor='temperature'."""
-    return world.SENSORS[room][sensor]
+    readings = world.SENSORS.get(room)
+    if readings is None:
+        raise ValueError(
+            f"unknown room '{room}'. Valid rooms: {sorted(world.SENSORS)}"
+        )
+    if sensor not in readings:
+        raise ValueError(
+            f"room '{room}' has no sensor '{sensor}'. "
+            f"Valid sensors: {sorted(readings)}"
+        )
+    return readings[sensor]
 
 def _coerce(value: str, current):
     """Coerce the string ``value`` to match the type of the attribute's
