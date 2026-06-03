@@ -10,3 +10,10 @@ SENSORS = {
     "living_room": {"temperature": 21},
     "kitchen": {"temperature": 22}
 }
+
+# Safe ranges for numeric attributes. set_device clamps incoming values into
+# these bounds so the agent can never drive a device out of a safe range.
+GUARDRAILS = {
+    "target_c":   (5, 30),    # thermostat setpoint, °C
+    "brightness": (0, 100),   # light brightness, %
+}
