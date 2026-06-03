@@ -7,10 +7,11 @@ Run locally with:
 import structlog
 from fastapi import FastAPI
 
-from app import __version__
+from app import __version__, world
+from app.agent import run_command
 from app.config import get_settings
 from app.log_config import configure_logging
-from app.schemas import ActionResult, HealthResponse
+from app.schemas import ActionResult, CommandRequest, HealthResponse
 
 settings = get_settings()
 configure_logging(level=settings.log_level, json_logs=settings.json_logs)
@@ -24,9 +25,15 @@ async def health() -> HealthResponse:
     """Liveness probe — returns ok if the service is up."""
     return HealthResponse(status="ok", app=settings.app_name, version=__version__)
 
+@app.get("/world", tags=["world"])
+async def world_status() -> dict:
+    """Return the current state of every device and sensor."""
+    return {"devices": world.WORLD, "sensors": world.SENSORS}
+
+
 @app.post("/command", response_model=ActionResult)
-async def command(body: dict):
-    pass
+async def command(body: CommandRequest) -> ActionResult:
+    return await run_command(body.text_command)
 
 
 if __name__ == "__main__":
