@@ -1,11 +1,11 @@
-from langchain_ollama import ChatOllama
-from langgraph.prebuilt import create_react_agent
+from langchain.agents import create_agent
+from langchain.chat_models import init_chat_model
 from langchain_core.messages import HumanMessage
 from app import tools
 from app.schemas import ActionResult, ToolCall
 
 # temperature=0 for repeatability. llama3.1:8b is tool-capable.
-llm = ChatOllama(model="qwen2.5:7b", temperature=0)
+llm = init_chat_model(model="ollama:qwen2.5:7b", temperature=0)
 
 SYSTEM = """
 You control a smart home. To handle a command:
@@ -15,10 +15,10 @@ You control a smart home. To handle a command:
 Respond with a short summary of exactly what you changed.
 """
 
-agent = create_react_agent(
+agent = create_agent(
     llm,
     tools=[tools.list_devices, tools.get_sensor, tools.set_device],
-    prompt=SYSTEM,
+    system_prompt=SYSTEM,
 )
 
 async def run_command(text: str) -> ActionResult:
