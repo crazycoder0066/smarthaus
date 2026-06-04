@@ -9,10 +9,10 @@
 # to lock exact versions for reproducibility.
  
 # --- LLM / agent framework ---
-langchain>=0.3,<0.4
-langchain-core>=0.3,<0.4
+langchain>=1.0.0
+langchain-core>=1.4.0
 langchain-ollama>=0.2          # ChatOllama — do NOT use the deprecated langchain_community import
-langgraph>=0.2.60              # langgraph.prebuilt.create_react_agent
+langgraph>=1.0.0              # langgraph.prebuilt.create_react_agent
                                #   note: if create_react_agent rejects prompt=, upgrade langgraph
                                #   (older versions used state_modifier=)
  
