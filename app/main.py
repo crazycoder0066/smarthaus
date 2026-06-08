@@ -9,7 +9,7 @@ from typing import Annotated
 
 from pydantic import BaseModel, Field
 import structlog
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, Header
 
 from app import __version__, world
 from app.agent import run_command
@@ -48,9 +48,13 @@ async def world_status() -> dict:
 
 
 @app.get('/items')
-async def items(filterQuery: Annotated[ItemFilterParams, Query()]):
+async def items(
+    filterQuery: Annotated[ItemFilterParams, Query()],
+    user_agent: Annotated[str | None, Header()] = None,
+):
     skip = filterQuery.skip
     limit = filterQuery.limit
+    print(user_agent)
     return mock_items_db[skip:skip+limit]
 
 
